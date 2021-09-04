@@ -1,5 +1,5 @@
 var tlvjs = {};
-var TLV = function(tag, value, indefiniteLength, originalLength) {
+function TLV(tag, value, indefiniteLength, originalLength) {
     Object.defineProperty(this, 'tag', { value: tag });
     Object.defineProperty(this, 'value', { value: value });
     Object.defineProperty(this, 'constructed', { value: value instanceof Array });
