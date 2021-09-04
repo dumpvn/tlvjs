@@ -114,10 +114,6 @@ tlvjs.parse = function(buf) {
 
     if (tag.constructed) {
         value = tlvjs.parseAll(value);
-    } else {
-        var tmpBuffer = value;
-        value = new Buffer(tmpBuffer.length);
-        tmpBuffer.copy(value);
     }
 
     return new TLV(tag.tag, value, false, index);
