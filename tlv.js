@@ -1,14 +1,4 @@
 var tlvjs = {};
-function TLV(tag, value, indefiniteLength, originalLength) {
-    Object.defineProperty(this, 'tag', { value: tag });
-    Object.defineProperty(this, 'value', { value: value });
-    Object.defineProperty(this, 'constructed', { value: value instanceof Array });
-    Object.defineProperty(this, 'indefiniteLength', { value: indefiniteLength === undefined ? false : indefiniteLength });
-    if (originalLength !== undefined) {
-        Object.defineProperty(this, 'originalLength', { value: originalLength });
-    }
-    Object.defineProperty(this, 'byteLength', { get: this.getByteLength });
-}
 
 tlvjs.hexToBytes = function (hex) {
     for (var bytes = [], c = 0; c < hex.length; c += 2)
@@ -88,7 +78,14 @@ tlvjs.parse = function(buf) {
             index += value[i].originalLength;
         }
 
-        return new TLV(tag.tag, value, true, index + 2);
+        return {
+            tag: tag.tag,
+            value: value,
+            indefiniteLength: true,
+            originalLength: index + 2
+        };
+
+        // return new TLV(tag.tag, value, true, index + 2);
     } else if ((buf[index] & 0x80) == 0x80) {
         var lenOfLen = buf[index++] & 0x7F;
 
@@ -116,6 +113,12 @@ tlvjs.parse = function(buf) {
         value = tlvjs.parseAll(value);
     }
 
-    return new TLV(tag.tag, value, false, index);
+    return {
+        tag: tag.tag,
+        value: value,
+        indefiniteLength: false,
+        originalLength: index
+    };
+    // return new TLV(tag.tag, value, false, index);
 };
 
