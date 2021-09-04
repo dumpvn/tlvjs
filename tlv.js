@@ -82,7 +82,8 @@ tlvjs.parse = function(buf) {
             tag: tag.tag,
             value: value,
             indefiniteLength: true,
-            originalLength: index + 2
+            originalLength: index + 2,
+            constructed: tag.constructed
         };
 
         // return new TLV(tag.tag, value, true, index + 2);
@@ -117,7 +118,8 @@ tlvjs.parse = function(buf) {
         tag: tag.tag,
         value: value,
         indefiniteLength: false,
-        originalLength: index
+        originalLength: index,
+        constructed: tag.constructed
     };
     // return new TLV(tag.tag, value, false, index);
 };
